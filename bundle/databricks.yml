@@ -2,7 +2,10 @@ bundle:
   name: stepright-lakehouse
 
 include:
-  - resources/ingestion-pipeline.yml
+  - resources/ingestion_pipeline.yml
+  - resources/transformation_pipeline.yml
+  - resources/orchestration_job.yml
+  - resources/environment_bootstrap_job.yml
 
 
 sync:
@@ -10,3 +13,27 @@ sync:
     - ../pipelines
     - ../jobs
     - ../setup
+    - ../monitoring
+
+  
+variables:
+  stepright_catalog:
+    description: Unity catalog ths target read/writes
+    default: dev
+  
+  stepright_warehouse_id:
+    description: SQL warehouse Id the DQ
+    default: b1e42ef56eb8f97b
+  
+
+targets:
+  dev:
+    default: true
+    workspace:
+      host: https://dbc-2600fe6d-346b.cloud.databricks.com/
+  uat:
+    default: true
+    workspace:
+      host: https://dbc-2600fe6d-346b.cloud.databricks.com/      
+    variables:
+      stepright_catalog: uat
