@@ -1,0 +1,12 @@
+bundle:
+  name: stepright-lakehouse
+
+include:
+  - resources/ingestion-pipeline.yml
+
+
+sync:
+  paths:
+    - ../pipelines
+    - ../jobs
+    - ../setup

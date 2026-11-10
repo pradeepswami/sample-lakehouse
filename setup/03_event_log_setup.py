@@ -18,8 +18,8 @@
 # COMMAND ----------
 
 dbutils.widgets.text("catalog", "dev", "Target catalog")
-dbutils.widgets.text("ingestion_pipeline_id", "9a249523-182d-4eed-9839-6cfaf0f6e1bf", "stepright-ingestion-pipeline ID")
-dbutils.widgets.text("transformation_pipeline_id", "5a15b0b7-b094-4fca-86c7-404a2119a053", "stepright-transformation-pipeline ID")
+dbutils.widgets.text("ingestion_pipeline_id", "27a8d980-f608-45cb-aaf9-0b35703e4b6e", "stepright-ingestion-pipeline ID")
+dbutils.widgets.text("transformation_pipeline_id", "6506fdfd-06e7-4ad5-b911-44afac6a7e12", "stepright-transformation-pipeline ID")
 
 catalog = dbutils.widgets.get("catalog")
 ingestion_pipeline_id = dbutils.widgets.get("ingestion_pipeline_id")
@@ -45,3 +45,15 @@ SELECT * FROM event_log("{transformation_pipeline_id}")
 
 print(f"Created {catalog}.stepright.ingestion_event_log_raw")
 print(f"Created {catalog}.stepright.transformation_event_log_raw")
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select details,
+# MAGIC   explode(
+# MAGIC     from_json(
+# MAGIC       details,
+# MAGIC       'flow_progress STRUCT<data_quality STRUCT<expectations ARRAY<STRUCT<dataset STRING, name STRING, passed_records BIGINT, failed_records BIGINT>>>>'
+# MAGIC     ).flow_progress.data_quality.expectations
+# MAGIC   ) as dq
+# MAGIC from dev.stepright.ingestion_event_log_raw where event_type = 'flow_progress'

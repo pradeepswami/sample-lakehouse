@@ -93,19 +93,19 @@ def _read_cdc_bronze(subfolder: str, row_schema: StructType):
 @dp.table(name="bronze_orders",
           comment="Raw CDC envelope for order")
 def bronze_orders():
-    return _read_cdc_bronze("orders", ORDERS_ROW_SCHEMA)
+    return _read_cdc_bronze("orders_cdc", ORDERS_ROW_SCHEMA)
 
 
 @dp.table(name="bronze_order_items",
           comment="Raw CDC envelope for order items")
 def bronze_order_items():
-    return _read_cdc_bronze("order_items", ORDER_ITEMS_ROW_SCHEMA)
+    return _read_cdc_bronze("order_items_cdc", ORDER_ITEMS_ROW_SCHEMA)
 
 
 @dp.table(name="bronze_customers",
           comment="Raw CDC envelope for customers")
 def bronze_customers():
-    return _read_cdc_bronze("customers", CUSTOMERS_ROW_SCHEMA)
+    return _read_cdc_bronze("customers_cdc", CUSTOMERS_ROW_SCHEMA)
 
 
 
